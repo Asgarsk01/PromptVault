@@ -1,0 +1,40 @@
+<header class="bg-[#131313]/85 backdrop-blur-lg shadow-[0_12px_40px_rgba(14,14,14,0.4)] docked full-width top-0 z-50 flex justify-between items-center px-10 py-5 w-full border-none border-b border-white/5">
+  <div class="flex items-center">
+    <div class="flex items-center gap-3" routerLink="/dashboard" style="cursor: pointer;">
+      <div class="w-8 h-8">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="12" fill="#E60023" />
+          <path d="M7 8L10.5 12L7 16M11 16H17" stroke="white" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h1 class="text-2xl font-black tracking-tighter">
+        <span class="text-[#E60023]">Prompt</span><span class="text-white">Vault</span>
+      </h1>
+    </div>
+    <div class="ml-8 pl-8 border-l border-white/10 hidden lg:flex flex-col justify-center gap-0.5">
+      <span class="text-on-surface-variant text-sm font-bold opacity-70 leading-none">Hi {{ displayName }},</span>
+      <span class="text-on-surface text-lg font-black tracking-tighter leading-none">Welcome back!</span>
+    </div>
+  </div>
+  <nav class="flex items-center gap-6">
+    <div class="flex items-center justify-end">
+      <div class="relative flex items-center group">
+        <input 
+          class="w-10 focus:w-64 lg:focus:w-80 bg-transparent focus:bg-surface-container-lowest border border-transparent focus:border-white/20 rounded-[999px] pl-10 pr-0 focus:pr-4 py-2 text-sm transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] text-on-surface outline-none cursor-pointer focus:cursor-text ring-0 focus:ring-0" 
+          placeholder="Search vault..." 
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchInput($event)"
+        />
+        <div class="absolute left-0 w-10 h-10 flex items-center justify-center bg-[#E60023] rounded-[999px] group-focus-within:bg-transparent transition-all duration-300 pointer-events-none">
+          <span class="material-symbols-outlined text-white text-[1.2rem]">search</span>
+        </div>
+      </div>
+    </div>
+    <button (click)="logout()" class="bg-primary-container text-on-primary-container pl-4 pr-5 py-2.5 rounded-lg font-bold text-sm tracking-tight hover:bg-[#cc001f] transition-all active:scale-95 duration-150 flex items-center gap-2 shrink-0 shadow-lg shadow-primary-container/20">
+      <span class="material-symbols-outlined text-[1.2rem]">logout</span>
+      Sign Out
+    </button>
+  </nav>
+</header>

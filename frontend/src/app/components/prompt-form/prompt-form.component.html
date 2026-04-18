@@ -1,0 +1,161 @@
+<div class="min-h-screen bg-surface-container-lowest flex items-center justify-center px-6 py-10 overflow-hidden relative">
+  <!-- Success Modal Overlay -->
+  @if (showSuccessModal) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-6 backdrop-blur-xl bg-surface/40 animate-in fade-in duration-500">
+      <div class="bg-surface-container-low w-full max-w-md rounded-2xl p-10 shadow-[0_32px_120px_rgba(0,0,0,0.6)] border border-outline-variant/10 text-center animate-in zoom-in-95 duration-500">
+        <div class="w-20 h-20 bg-[#E60023]/10 text-[#E60023] rounded-full flex items-center justify-center mx-auto mb-8">
+          <span class="material-symbols-outlined text-4xl">check_circle</span>
+        </div>
+        <h2 class="text-3xl font-bold text-on-surface mb-2 tracking-tight">Prompt Published Successfully</h2>
+        <p class="text-on-surface-variant text-sm opacity-60 mb-10 leading-relaxed px-4">
+          Your curation has been added to the collective vault and is now accessible to all curators in the gallery.
+        </p>
+        <button 
+          (click)="backToList()"
+          class="w-full bg-[#E60023] text-white py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg"
+        >
+          Return to Vault
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="w-full max-w-2xl bg-surface-container-low rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+    
+    <!-- Top Progress Bar -->
+    <div class="h-1 w-full bg-surface-container-high">
+      <div class="h-full bg-[#E60023] transition-all duration-700 ease-out" [style.width.%]="currentStep * 50"></div>
+    </div>
+
+    <div class="p-10">
+      <!-- Header -->
+      <div class="mb-10">
+        <span class="text-[#E60023] font-bold text-sm block mb-2">Artifact Portal // Step 0{{ currentStep }}</span>
+        <h1 class="text-4xl font-bold text-on-surface tracking-tight">
+          @if (currentStep === 1) { Core Identity } @else { Metadata Archive }
+        </h1>
+        <p class="text-on-surface-variant text-sm mt-3 opacity-60 leading-relaxed max-w-md">
+          @if (currentStep === 1) {
+            Define the primary structure and generation instructions for this artifact to ensure high-fidelity reproduction.
+          } @else {
+            Categorize your prompt with complexity indices and discovery tags to help curate the collective vault.
+          }
+        </p>
+      </div>
+
+      <form [formGroup]="promptForm" (ngSubmit)="submit()">
+        
+        <!-- Step 1: Core Fields -->
+        @if (currentStep === 1) {
+          <div class="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div>
+              <label class="block text-sm font-bold text-white mb-3">Title of Artifact *</label>
+              <input 
+                formControlName="title"
+                placeholder="e.g. Ethereal Architecture V4"
+                class="w-full bg-surface-container-highest border-none rounded-xl px-6 py-4 text-on-surface placeholder:text-on-surface-variant/20 focus:ring-1 focus:ring-[#E60023] transition-all"
+              />
+              <div class="flex justify-between mt-2">
+                <span class="text-xs text-error font-medium">{{ fieldError('title') }}</span>
+                <span class="text-xs text-on-surface-variant opacity-30 font-bold">{{ titleLength() }}/255</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-white mb-3">Prompt Logic *</label>
+              <textarea 
+                formControlName="content"
+                rows="6"
+                placeholder="Paste the generation parameters or instructions here..."
+                class="w-full bg-surface-container-highest border-none rounded-xl px-6 py-4 text-on-surface placeholder:text-on-surface-variant/20 focus:ring-1 focus:ring-[#E60023] transition-all resize-none leading-relaxed"
+              ></textarea>
+              <div class="flex justify-between mt-2">
+                <span class="text-xs text-error font-medium">{{ fieldError('content') }}</span>
+                <span class="text-xs text-on-surface-variant opacity-30 font-bold">{{ contentLength() }} characters</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Step 2: Metadata -->
+        @if (currentStep === 2) {
+          <div class="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div>
+              <div class="flex justify-between items-end mb-4">
+                <label class="block text-sm font-bold text-white">Complexity / 10</label>
+                <span class="px-3 py-1 bg-surface-container-highest text-white text-xs font-bold rounded-lg border border-outline-variant/10">
+                  {{ complexityValue() }} / 10
+                </span>
+              </div>
+              <input 
+                type="range" min="1" max="10" 
+                formControlName="complexity"
+                class="w-full h-1.5 bg-surface-container-high rounded-full appearance-none accent-[#E60023] cursor-pointer"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-white mb-4">Curated Discovery Tags</label>
+              <div class="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                @for (tag of tags; track tag.id) {
+                  <button
+                    type="button"
+                    (click)="toggleTag(tag.name)"
+                    [ngClass]="isTagSelected(tag.name) ? 'bg-[#E60023] text-white shadow-lg' : 'bg-surface-container-highest text-on-surface-variant hover:text-white transition-colors'"
+                    class="px-4 py-2 text-xs font-bold rounded-lg"
+                  >
+                    {{ tag.name }}
+                  </button>
+                }
+              </div>
+              <p class="mt-4 text-[0.7rem] text-on-surface-variant font-bold opacity-40 leading-none">
+                {{ selectedTagCount() }} tags selected for archive
+              </p>
+            </div>
+          </div>
+        }
+
+        @if (formError) {
+          <div class="mt-8 p-4 bg-error/10 border border-error/20 rounded-lg text-error text-[0.7rem] font-bold animate-in fade-in duration-300">
+            {{ formError }}
+          </div>
+        }
+
+        <!-- Actions -->
+        <div class="flex justify-between items-center mt-12 pt-8 border-t border-outline-variant/5">
+          <button 
+            type="button" 
+            (click)="currentStep === 1 ? backToList() : prevStep()"
+            class="px-8 py-3 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-colors"
+          >
+            {{ currentStep === 1 ? 'Cancel' : 'Back' }}
+          </button>
+
+          @if (currentStep === 1) {
+            <button 
+              type="button"
+              (click)="nextStep()"
+              class="bg-on-surface text-surface px-10 py-3 rounded-xl font-bold text-sm hover:bg-[#E60023] hover:text-white transition-all shadow-xl"
+            >
+              Continue
+            </button>
+          } @else {
+            <button 
+              type="submit"
+              [disabled]="isSubmitting"
+              class="bg-[#E60023] text-white px-10 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+            >
+              @if (isSubmitting) {
+                <span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                Archiving...
+              } @else {
+                Publish Prompt
+              }
+            </button>
+          }
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

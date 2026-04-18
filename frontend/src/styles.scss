@@ -1,0 +1,201 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Fonts */
+@import "@fontsource/urbanist/700.css";
+@import "@fontsource/urbanist/400.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/urbanist/index.css";
+@import "@fontsource/inter/index.css";
+@import "@fontsource/jetbrains-mono/index.css";
+@import "@fontsource/material-icons-outlined/index.css";
+
+mat-icon {
+  font-family: 'Material Icons Outlined' !important;
+}
+
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+:root {
+  --bg-main: #0a0a0a;
+  --bg-accent: #111111;
+  --surface-primary: #1c1c1c;
+  --surface-secondary: #242424;
+  --surface-strong: #0a0a0a;
+  --text-primary: #FFFFFF;
+  --muted-text: #a0a0a0;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent-primary: #E60023;
+  --accent-secondary: #f0f0f0;
+
+  // Font Hierachies
+  --font-headings: 'Urbanist', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-technical: 'JetBrains Mono', monospace;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-main);
+  background:
+    radial-gradient(circle at 50% -20%, rgba(230, 0, 35, 0.08), transparent 45%),
+    var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .brand {
+  font-family: var(--font-headings);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  
+  .brand-logo {
+    width: 2rem;
+    height: 2rem;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .brand-logo {
+    transform: scale(1.1);
+  }
+}
+
+
+* {
+  box-sizing: border-box;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+button,
+a {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(5, 8, 20, 0.32);
+}
+
+.mat-mdc-card,
+.filter-bar,
+.state-block {
+  background: var(--surface-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.mat-toolbar {
+  background: rgba(11, 17, 32, 0.88) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: blur(18px);
+}
+
+.mat-mdc-form-field {
+  display: block;
+}
+
+.mat-mdc-form-field .mdc-text-field--filled,
+.mat-mdc-form-field .mdc-text-field--outlined {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field .mat-mdc-form-field-hint,
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix,
+.mat-mdc-form-field .mat-mdc-input-element::placeholder {
+  color: var(--muted-text) !important;
+}
+
+.mat-mdc-input-element,
+.mat-mdc-select-value-text {
+  color: var(--text-primary) !important;
+  caret-color: var(--accent-secondary);
+}
+
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.mat-mdc-button-base {
+  border-radius: 999px !important;
+}
+
+.mat-mdc-outlined-button:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-button:not(:disabled) {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-unelevated-button.mat-primary,
+.mat-mdc-raised-button.mat-primary {
+  background: var(--accent-primary) !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-headings);
+  font-weight: 700;
+  box-shadow: 0 8px 16px rgba(230, 0, 35, 0.2) !important;
+}
+
+.badge-low,
+.badge-mid,
+.badge-high {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.badge-low {
+  background: #4caf50;
+}
+
+.badge-mid {
+  background: #ff9800;
+}
+
+.badge-high {
+  background: #f44336;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background: #09111f !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-subtle);
+}

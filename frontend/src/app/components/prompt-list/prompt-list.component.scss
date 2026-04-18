@@ -1,0 +1,322 @@
+.page-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.hero-copy {
+  max-width: 620px;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--accent-secondary);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.page-hero h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
+.hero-subtitle,
+.hero-meta {
+  margin: 0.85rem 0 0;
+  color: var(--muted-text);
+}
+
+.hero-meta strong {
+  color: var(--text-primary);
+}
+
+.filter-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.filter-bar {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.filter-label {
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.filter-caption {
+  margin: 0 0 0.85rem;
+  color: var(--muted-text);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.filter-chip,
+.tag-pill {
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+}
+
+.active-filter {
+  border-color: rgba(79, 209, 197, 0.4);
+  background: rgba(79, 209, 197, 0.14);
+  color: #d9fffb;
+}
+
+.prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.prompt-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0;
+}
+
+.prompt-date {
+  color: var(--muted-text);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prompt-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.75rem;
+}
+
+.prompt-card-content h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.15;
+}
+
+.complexity-meter {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.complexity-track {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.complexity-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.complexity-fill.badge-low {
+  background: #4caf50;
+}
+
+.complexity-fill.badge-mid {
+  background: #ff9800;
+}
+
+.complexity-fill.badge-high {
+  background: #f44336;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag-pill {
+  padding: 0.35rem 0.8rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tag-pill.active {
+  border-color: rgba(79, 209, 197, 0.45);
+  background: rgba(79, 209, 197, 0.16);
+}
+
+.preview {
+  margin: 0;
+  color: var(--muted-text);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.view-meta {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 0.92rem;
+}
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.state-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(79, 209, 197, 0.12);
+  color: var(--accent-secondary);
+}
+
+.state-icon svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.empty-state h2,
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state p {
+  max-width: 420px;
+  color: var(--muted-text);
+}
+
+.error-state {
+  color: #ff8e8e;
+}
+
+.card-actions {
+  padding-top: 0;
+}
+
+@media (max-width: 700px) {
+  .page-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+// ---------------------------------------------------------
+// Responsive Dashboard Integration for Tailwind Structures
+// ---------------------------------------------------------
+:host {
+  display: block;
+
+  // Main Layout Container
+  .min-h-screen {
+    @media (max-width: 1024px) {
+      flex-direction: column !important;
+      padding: 2.5rem 2rem !important;
+      gap: 2.5rem !important;
+    }
+    
+    @media (max-width: 768px) {
+      padding: 1.5rem !important;
+      gap: 2rem !important;
+    }
+    
+    @media (max-width: 480px) {
+      padding: 1.25rem 1rem !important;
+    }
+  }
+
+  // Header and Toolbar
+  .mb-12 {
+    @media (max-width: 1024px) {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 1.5rem !important;
+      margin-bottom: 2rem !important;
+    }
+  }
+
+  // Typography
+  h2.text-5xl {
+    @media (max-width: 768px) {
+      font-size: 3rem !important;
+    }
+    @media (max-width: 480px) {
+      font-size: 2.25rem !important;
+      margin-top: 0.5rem !important;
+    }
+  }
+
+  p.max-w-xl {
+    @media (max-width: 480px) {
+      margin-top: 0.75rem !important;
+    }
+  }
+
+  // Action Buttons Group
+  .flex.gap-4.items-center {
+    @media (max-width: 768px) {
+      width: 100%;
+      flex-wrap: wrap;
+      
+      button {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+    }
+  }
+
+  // Grid
+  .grid {
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr !important;
+      gap: 1.5rem !important;
+    }
+  }
+
+  // Cards layout adjustments
+  .grid > div {
+    @media (max-width: 480px) {
+      .h-80 {
+        height: 14rem !important;
+      }
+      .p-8 {
+        padding: 1.25rem !important;
+      }
+      h3 {
+        font-size: 1.15rem !important;
+      }
+    }
+  }
+}

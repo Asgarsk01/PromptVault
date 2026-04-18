@@ -1,0 +1,34 @@
+:host {
+  display: block;
+
+  aside {
+    @media (max-width: 1024px) {
+      width: 100% !important;
+      position: static !important;
+      flex-direction: row !important;
+      align-items: stretch !important;
+      gap: 2rem !important;
+      margin-bottom: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column !important;
+      gap: 1.5rem !important;
+    }
+  }
+
+  .bg-white, .bg-surface-container-high {
+    @media (max-width: 1024px) {
+      flex: 1;
+      width: 100%;
+    }
+    
+    @media (max-width: 768px) {
+      padding: 1.5rem !important;
+    }
+
+    @media (max-width: 480px) {
+      padding: 1.25rem !important;
+    }
+  }
+}

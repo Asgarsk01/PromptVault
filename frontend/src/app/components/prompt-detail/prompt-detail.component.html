@@ -1,0 +1,141 @@
+<div class="min-h-screen bg-surface-container-lowest px-10 py-16 flex justify-center overflow-auto">
+  <div class="w-full max-w-6xl">
+    
+    <!-- Navigation & Feedback -->
+    <div class="flex justify-between items-center mb-10">
+      <button (click)="backToList()" class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface transition-colors font-bold text-xs uppercase tracking-widest group">
+        <span class="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        Back to Gallery
+      </button>
+      
+      @if (errorMessage) {
+        <div class="text-error text-sm font-bold flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">error</span>
+          {{ errorMessage }}
+        </div>
+      }
+    </div>
+
+    @if (isLoading) {
+      <div class="py-12 flex justify-center">
+        <div class="w-12 h-1 bg-surface-container-high relative overflow-hidden">
+          <div class="absolute top-0 left-0 h-full w-1/2 bg-primary-container animate-pulse"></div>
+        </div>
+      </div>
+    } @else if (prompt) {
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 animate-in fade-in slide-in-from-bottom-6 duration-700">
+        
+        <!-- Main Content (Left) -->
+        <div class="lg:col-span-8 space-y-8">
+          
+          <!-- Header -->
+          <header>
+            <span class="text-[#E60023] font-bold text-sm block mb-3 opacity-80">Artifact Serial: 00{{ prompt.id }}</span>
+            <h1 class="text-5xl font-bold text-on-surface tracking-tighter leading-tight mb-4">{{ prompt.title }}</h1>
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-2 text-on-surface-variant text-sm font-bold opacity-40">
+                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                Added {{ prompt.created_at | date:'dd MMM yyyy' }}
+              </div>
+              <div class="w-px h-4 bg-outline-variant/10"></div>
+              <div class="flex items-center gap-2 text-on-surface-variant text-sm font-bold opacity-40">
+                <span class="material-symbols-outlined text-sm text-[#E60023]">verified</span>
+                Verified Vault Entry
+              </div>
+            </div>
+          </header>
+
+          <!-- Prompt Content -->
+          <section class="relative">
+            <div class="absolute -top-3 -left-3 w-10 h-10 border-t-2 border-l-2 border-outline-variant/10 rounded-tl-xl"></div>
+            <div class="absolute -bottom-3 -right-3 w-10 h-10 border-b-2 border-r-2 border-outline-variant/10 rounded-br-xl"></div>
+            
+            <div class="bg-surface-container-low rounded-2xl p-8 border border-outline-variant/10 shadow-[0_15px_45px_rgba(0,0,0,0.3)] relative overflow-hidden group">
+               <div class="absolute top-0 right-0 w-80 h-80 bg-primary-container/5 blur-[80px] pointer-events-none"></div>
+               
+               <div class="flex justify-between items-center mb-8 pb-4 border-b border-outline-variant/5">
+                  <span class="text-sm font-bold text-white opacity-30">Prompt Logic Core</span>
+                  <button 
+                    (click)="copyToClipboard(prompt.content)"
+                    [ngClass]="copied ? 'bg-green-600 text-white scale-105' : 'bg-surface-container-high hover:bg-[#E60023] hover:text-white'"
+                    class="flex items-center gap-3 px-5 py-2 rounded-xl text-xs font-bold transition-all duration-300 group/btn shadow-md active:scale-95"
+                  >
+                    @if (copied) {
+                      <span class="material-symbols-outlined text-sm animate-in zoom-in-50">done_all</span>
+                      <span class="animate-in fade-in slide-in-from-left-2">Copied!</span>
+                    } @else {
+                      <span class="material-symbols-outlined text-base group-hover/btn:rotate-12 transition-transform">content_copy</span>
+                      <span>Copy Pattern</span>
+                    }
+                  </button>
+               </div>
+               
+               <p class="text-on-surface text-lg leading-relaxed font-medium whitespace-pre-wrap selection:bg-[#E60023] selection:text-white">
+                 {{ prompt.content }}
+               </p>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Unified Sidebar / Prompt Overview (Right) -->
+        <div class="lg:col-span-4 lg:border-l lg:border-outline-variant/5 lg:pl-10 space-y-10 h-fit">
+          
+          <div class="space-y-8">
+            <!-- Specification Header -->
+            <div class="pb-5 border-b border-outline-variant/10">
+              <span class="text-white text-sm font-bold block mb-2">Prompt Overview</span>
+              <p class="text-on-surface-variant text-xs opacity-60 leading-relaxed">
+                Detailed metadata and classification for this specific artifact.
+              </p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 gap-6">
+              <div class="space-y-1">
+                <span class="text-white text-xs font-bold opacity-30 block">Total Views</span>
+                <div class="flex items-center gap-2">
+                  <span class="text-2xl font-bold text-on-surface leading-none">{{ prompt.view_count || 0 }}</span>
+                  <span class="material-symbols-outlined text-[#E60023] text-xl">visibility</span>
+                </div>
+              </div>
+              <div class="space-y-1">
+                <span class="text-white text-xs font-bold opacity-30 block">Vault Status</span>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                  <span class="text-xs font-bold text-on-surface">Synchronized</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Complexity Index -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-end">
+                <span class="text-white text-xs font-bold opacity-30">Generation Complexity</span>
+                <span class="text-on-surface font-bold text-xs">{{ prompt.complexity }} / 10</span>
+              </div>
+              <div class="h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-[#E60023] transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(230,0,35,0.4)]" [style.width]="progressWidth(prompt.complexity)"></div>
+              </div>
+            </div>
+
+            <!-- Discovery Tags -->
+            <div class="space-y-5">
+              <span class="text-white text-xs font-bold opacity-30 block">Associated Tags</span>
+              <div class="flex flex-wrap gap-2">
+                @for (tag of prompt.tags; track tag.id) {
+                  <span class="px-3 py-1.5 bg-surface-container-high hover:bg-surface-bright transition-all text-xs font-bold text-white rounded border border-outline-variant/10 cursor-default">
+                    {{ tag.name }}
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    }
+  </div>
+</div>

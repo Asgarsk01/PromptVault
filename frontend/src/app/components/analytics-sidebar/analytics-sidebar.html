@@ -1,0 +1,78 @@
+<aside class="w-80 flex flex-col gap-10 shrink-0 sticky top-32 self-start mb-10">
+  <!-- Tags Card -->
+  <div class="bg-white p-8 rounded-xl text-surface shadow-[0_12px_40px_rgba(0,0,0,0.1)]">
+    <h3 class="font-bold text-base mb-6 flex items-center gap-2">
+      <span class="material-symbols-outlined text-[#E60023]">label</span>
+      Active Trending Tags
+    </h3>
+    <div class="flex flex-wrap gap-2">
+      @for (tag of tags; track tag) {
+        <button 
+          (click)="toggleTag(tag)" 
+          [ngClass]="isSelected(tag) ? 'bg-primary-container text-white' : 'bg-surface text-white hover:bg-surface-bright'"
+          class="px-4 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer">
+          {{ tag }}
+        </button>
+      }
+    </div>
+  </div>
+  
+  <!-- Analytics Card -->
+  <div class="bg-surface-container-high p-8 rounded-xl text-on-surface shadow-[0_12px_40px_rgba(0,0,0,0.3)]">
+    <h3 class="font-bold text-base mb-8 flex items-center gap-2">
+      <span class="material-symbols-outlined text-[#E60023]">monitoring</span>
+      Analytics
+    </h3>
+    <div class="space-y-8">
+      <div>
+        <div class="flex justify-between text-sm font-bold mb-3">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary-container text-[1.1rem]">local_fire_department</span>
+            Trending
+          </span>
+          <span>{{ trending | number:'1.0-0' }}%</span>
+        </div>
+        <div class="h-2 w-full bg-surface/30 rounded-full overflow-hidden">
+          <div class="h-full bg-primary-container transition-all duration-700 ease-out" [style.width.%]="trending"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between text-sm font-bold mb-3">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-white text-[1.1rem]">visibility</span>
+            Most Viewed
+          </span>
+          <span>{{ mostViewed | number:'1.0-0' }}%</span>
+        </div>
+        <div class="h-2 w-full bg-surface/30 rounded-full overflow-hidden">
+          <div class="h-full bg-white transition-all duration-700 ease-out" [style.width.%]="mostViewed"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between text-sm font-bold mb-3">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary-container text-[1.1rem]">favorite</span>
+            Most Liked
+          </span>
+          <span>{{ mostLiked | number:'1.0-0' }}%</span>
+        </div>
+        <div class="h-2 w-full bg-surface/30 rounded-full overflow-hidden">
+          <div class="h-full bg-primary-container transition-all duration-700 ease-out" [style.width.%]="mostLiked"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between text-sm font-bold mb-3">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-white text-[1.1rem]">bookmark</span>
+            Saved Prompts
+          </span>
+          <span>{{ savedCount }} Items</span>
+        </div>
+        <div class="h-2 w-full bg-surface/30 rounded-full overflow-hidden">
+          <div class="h-full bg-white/40 transition-all duration-700 ease-out" [style.width.%]="savedProgress"></div>
+        </div>
+      </div>
+    </div>
+    <p class="mt-8 text-xs text-on-surface-variant/60 leading-relaxed">Analytics are dynamically updated based on the vault's active artifact selection.</p>
+  </div>
+</aside>
