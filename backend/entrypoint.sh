@@ -1,17 +1,23 @@
 #!/bin/sh
 
-# 1. Wait for PostgreSQL
 echo "Waiting for PostgreSQL..."
-while ! nc -z $DB_HOST $DB_PORT; do
-  sleep 1
+until python -c "
+import socket
+import sys
+host = '${DB_HOST:-db}'
+port = int('${DB_PORT:-5432}')
+try:
+    s = socket.create_connection((host, port), timeout=2)
+    s.close()
+    sys.exit(0)
+except Exception:
+    sys.exit(1)
+"; do
+  echo "PostgreSQL not ready, waiting..."
+  sleep 2
 done
+
 echo "PostgreSQL is ready."
-
-# 2. Run migrations
 python manage.py migrate --noinput
-
-# 3. Collect static files
 python manage.py collectstatic --noinput
-
-# 4. Start gunicorn
-exec gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 3
+gunicorn backend.wsgi:application --bind 0.0.0.0:8000 --workers 3
