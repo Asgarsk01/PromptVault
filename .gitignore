@@ -30,3 +30,4 @@ Thumbs.db
 # Data / editors
 postgres_data/
 .vscode/
+doc/
