@@ -17,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./components/prompt-list/prompt-list.component').then(
         (m) => m.PromptListComponent
@@ -40,6 +41,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard/:id',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./components/prompt-detail/prompt-detail.component').then(
         (m) => m.PromptDetailComponent

@@ -1,7 +1,7 @@
-@if (!isLoginPage()) {
+@if (shouldShowTopNav()) {
   <app-top-nav></app-top-nav>
 }
 
-<main class="app-shell" [class.app-shell--with-nav]="!isLoginPage()">
+<main class="app-shell" [class.app-shell--with-nav]="shouldShowTopNav()">
   <router-outlet />
 </main>

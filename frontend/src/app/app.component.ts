@@ -18,6 +18,10 @@ export class AppComponent {
     return this.router.url.includes('/login');
   }
 
+  shouldShowTopNav(): boolean {
+    return this.authService.isLoggedIn() && !this.isLoginPage();
+  }
+
   logout(): void {
     this.authService.logout();
   }
