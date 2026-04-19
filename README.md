@@ -1,3 +1,25 @@
+> **⚠️ Deployment Note for Indian Users**
+> 
+> The frontend is hosted on Railway (`lavish-respect-production.up.railway.app`).
+> Some Indian ISPs (eg: Jio) block Railway's generated subdomains at
+> DNS level, which may cause "This site can't be reached" errors.
+> 
+> **If you face this issue, any of these will work:**
+> - Use Google DNS: change your DNS to `8.8.8.8` and `8.8.4.4`
+> - Use a VPN (any free VPN works)
+> - Use mobile hotspot from a non-Jio SIM
+> - Access the backend API directly (not affected):
+>   `https://api.asgarassingment.online/api/prompts/`
+> 
+> This is a known Railway infrastructure issue in India and is unrelated
+> to the application code. The app is fully functional as verified on
+> non-blocked networks.
+> 
+> **Local setup works without any restrictions:**
+> ```
+> docker compose up --build
+> ```
+
 # PromptVault
 
 PromptVault is my submission for the **Assignment - Associate Front-end Developer / The Prompt Nexus Challenge**. It is a full-stack library application for managing AI image-generation prompts using the required stack:
