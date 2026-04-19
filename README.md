@@ -1,305 +1,105 @@
 # PromptVault
 
-PromptVault is my submission for the Emplay Associate Frontend Developer assignment. The application is a full-stack library for discovering, organizing, and managing AI image-generation prompts, built with the required stack of Angular, Django, PostgreSQL, Redis, and Docker.
+PromptVault is my submission for the **Assignment - Associate Front-end Developer / The Prompt Nexus Challenge**. It is a full-stack library application for managing AI image-generation prompts using the required stack:
 
-I treated the assignment as an opportunity to deliver not only a working solution, but also a clean, well-structured system with clear architectural boundaries, production-style setup, and a polished user experience. The final application combines a Dockerized Django API, PostgreSQL persistence, Redis-backed view counters, and an Angular frontend designed as a curated prompt gallery rather than a basic CRUD dashboard.
+- **Frontend:** Angular
+- **Backend:** Django
+- **Database:** PostgreSQL
+- **Cache:** Redis
+- **DevOps:** Docker Compose
 
-## Assignment Context
+## Links
 
-The assignment required:
+- **GitHub Repository:** [PromptVault](https://github.com/Asgarsk01/PromptVault)
+- **Frontend (Live):** [https://lavish-respect-production.up.railway.app](https://lavish-respect-production.up.railway.app)
+- **Backend API (Live):** [https://api.asgarassingment.online/api/prompts/](https://api.asgarassingment.online/api/prompts/)
+- **Figma (View Only):** [PromptVault Figma](https://www.figma.com/design/cLQxjyzH02hSmmmxziSQnS/PromptVault?node-id=0-1&t=rAu52UB1wnHXc4Ew-1)
 
-- an Angular frontend
-- a Django backend
-- PostgreSQL as the primary database
-- Redis for prompt view counting
-- Docker Compose setup for the complete stack
-- prompt list, prompt detail, and prompt creation flows
-- reactive form validation on the frontend
-
-Optional bonus areas included authentication, tagging, and live hosting.
-
-This README explains how I approached the solution, how I organized the project, and why I made the architectural choices reflected in the codebase.
-
-## Requirement Coverage
+## What This Project Covers
 
 ### Core Requirements Implemented
 
-- Full-stack application with separated frontend and backend
-- `Prompt` data model with title, content, complexity, and created timestamp
-- Prompt list view
-- Prompt detail view
-- Prompt creation flow with validation
-- PostgreSQL-backed persistence
-- Redis-backed live `view_count` on prompt retrieval
-- Docker Compose setup for frontend, backend, database, and cache
+- Prompt model with:
+  - `id`
+  - `title`
+  - `content`
+  - `complexity`
+  - `created_at`
+- `GET /prompts/` style listing support
+- `POST /prompts/` prompt creation support
+- `GET /prompts/:id/` prompt detail support
+- Redis-backed `view_count` increment on prompt detail retrieval
+- Angular prompt list view
+- Angular prompt detail view
+- Angular reactive prompt creation form with validation
+- Docker Compose setup for frontend, backend, PostgreSQL, and Redis
 
 ### Bonus Features Implemented
 
-- JWT-based authentication
+- JWT authentication
 - Signup, login, refresh token flow, and signout
-- Login using either username or email
+- Login using **username or email**
 - Protected prompt creation
-- Tagging system with prompt-tag filtering
-- Persistent likes and bookmarks
-- Bookmark collection view
-- Search with debounced frontend interaction and backend filtering
-- Analytics endpoint with tag-aware metrics
-
-### Scope Added Beyond the Assignment Minimum
-
-- Sticky authenticated header
-- Curated design system and polished visual hierarchy
-- Responsive routed interface with refined loading, empty, and error states
-- Seeded prompt library for realistic testing
-- NGINX-powered frontend container
-
-## Tech Stack
-
-### Frontend
-
-- Angular 21
-- TypeScript
-- Angular Router
-- Angular Reactive Forms
-- Angular Material
-- SCSS
-
-### Backend
-
-- Django 5.2
-- Django-first API implementation with lightweight DRF integration for authentication and JSON responses
-- SimpleJWT
-- PostgreSQL 15
-- Redis 7
-
-### Infrastructure
-
-- Docker Compose
-- NGINX
-
-## Project Vision
-
-I approached PromptVault as a high-end digital gallery rather than a plain prompt database. Since the domain is AI-generated image prompts, the product naturally benefits from a visually driven library experience. I wanted the interface to feel like a focused workspace for collecting and exploring creative assets, not simply a form plus table layout.
-
-That thinking led to a product direction centered on discovery, curation, and personal collection. The result is a UI that supports browsing, filtering, saving, and revisiting prompts in a way that feels more aligned with creative tooling than with a traditional admin panel.
-
-## Frontend and UI Approach
-
-The frontend direction was shaped as a technical design journey rather than a styling pass at the end.
-
-I started by looking at Pinterest because it solves the exact interaction problem this product has: how to explore a large visual library without introducing clutter. The Pinterest metaphor influenced the overall UX logic of the application:
-
-- a gallery-like browsing experience
-- contextual movement between tags
-- a strong “save to vault” mental model
-
-This inspiration informed the structure of the dashboard, the relationship between the list and detail views, and the idea that prompts should feel collectible rather than disposable.
-
-I then refined the visual language through broader research into premium dark interfaces and modern SaaS tooling. The palette was built around `#E60023` as the primary action color, paired with `#111111` and `#FFFFFF` for clarity and contrast. Accent usage was kept deliberate so actions and technical indicators would feel tactile rather than noisy.
-
-Before implementation, I treated the visual direction as a cohesive design system. The login screen overlay, prompt card motion, spacing rhythm, type hierarchy, and interaction states were all considered together. Typography pairing centered on `Urbanist` for sharper, geometric headings, supported by a functional secondary face for longer prompt content and metadata.
-
-This process helped me avoid a generic interface and instead build a UI that feels closer to a professional creative workspace.
-
-View-only Figma file: [PromptVault Figma](https://www.figma.com/design/cLQxjyzH02hSmmmxziSQnS/PromptVault?node-id=0-1&t=rAu52UB1wnHXc4Ew-1)
-
-### Why I Organized the Angular Code This Way
-
-One of the important points in the assignment was to explain the Angular architecture clearly. I organized the frontend around user-facing responsibilities rather than around too many abstract layers, because the project is large enough to require structure but still small enough that over-engineering would reduce clarity.
-
-The application uses Angular standalone components and route-based composition. I separated the main experiences cleanly:
-
-- `login`
-- `dashboard`
-- `dashboard/:id`
-- `dashboard/new`
-- `bookmarks`
-
-The key components are responsibility-driven:
-
-- `prompt-list` handles gallery browsing, filtering, pagination, bookmarks mode, and analytics integration
-- `prompt-detail` focuses on a single prompt experience
-- `prompt-form` manages validated prompt creation
-- `analytics-sidebar` presents tag-aware summary metrics
-- `top-nav` handles search, identity display, and signout
-
-The routing layer itself is intentionally thin. Each route loads a focused standalone component, which keeps the route configuration easy to read and makes screen-level responsibilities explicit. This fits Angular well because standalone components let each screen declare only the imports it actually needs instead of routing everything through a larger shared module.
-
-I kept API access inside services so the routed components remain focused on state and rendering, not on request construction. This separation was especially important in Angular because it kept the components easier to reason about and prevented authentication, filtering, and request logic from spreading across the UI.
-
-Concretely, the frontend code is organized around a few clear layers:
-
-- `models/` defines the TypeScript contracts for prompts, tags, analytics, and paginated responses
-- `services/` centralizes HTTP communication and session/auth state
-- `components/` contains the routed screens and focused UI sections
-- `guards/` and `interceptors/` handle navigation protection and request-level token behavior
-
-This structure helped keep the code predictable. For example:
-
-- `prompt.service.ts` owns prompt list, detail, create, like, bookmark, and analytics requests
-- `auth.service.ts` owns signup, login, token persistence, refresh, and logout
-- the auth interceptor is responsible for attaching the JWT access token and retrying a request after token refresh
-- the auth guard is responsible for protecting routes such as prompt creation and bookmarks
-
-This means the components mostly deal with UI state such as `isLoading`, active tag selection, pagination state, route navigation, and form state, while the networking details stay reusable and centralized.
-
-I chose this structure for three main reasons:
-
-- it keeps each routed screen self-contained and understandable
-- it separates rendering concerns from API concerns
-- it makes future feature expansion easier without introducing unnecessary module complexity
-
-Search behavior was also implemented carefully from a frontend perspective. Rather than firing a request on every keystroke, I added debouncing and duplicate suppression so the experience stays responsive while avoiding avoidable backend traffic.
-
-The prompt form is a good example of this balance. I used Angular Reactive Forms because the assignment explicitly required validation, and reactive forms made it straightforward to express validation rules, touched/dirty state, step-wise progression, and API error mapping in a structured way. That kept form validation close to the UI, while the actual submission logic remained in the service layer.
-
-## Backend Approach
-
-The backend was designed to satisfy the assignment requirements first, then extend naturally into bonus functionality without becoming fragmented.
-
-Django was a strong fit for this exercise because it offers:
-
-- a clear ORM model
-- straightforward routing
-- built-in admin capabilities
-- simple database migrations
-- reliable integration with PostgreSQL
-
-I kept the domain centered in a single focused app, `prompts`, because the project’s business logic remains cohesive. Splitting a project of this size into too many apps would have added ceremony without improving clarity.
-
-### Backend Responsibilities
-
-The backend currently supports:
-
-- prompt listing with filtering, pagination, and search
-- prompt detail retrieval
-- prompt creation with validation
-- tag retrieval
-- likes and bookmarks
-- bookmark collection retrieval
-- analytics aggregation
-- signup, login, refresh, and signout
-
-At the API layer, I used focused class-based views so each endpoint stays explicit and easy to follow. For an assignment project, this makes the backend behavior very readable because each view corresponds directly to a product capability rather than hiding logic behind heavier abstractions.
-
-### Data and Logic Design
-
-Core models:
-
-- `Prompt` stores the main prompt record
-- `Tag` supports prompt categorization
-- `PromptLike` stores per-user like state
-- `PromptBookmark` stores per-user bookmark state
-
-This model design keeps the core prompt entity simple while moving user-specific engagement into dedicated relational tables. That avoids inflating the prompt record itself and makes interactions such as likes and bookmarks easier to reason about.
-
-The key backend decisions were:
-
-- PostgreSQL as the durable relational source of truth
-- Redis as the source of truth for prompt view counts
-- JWT protection for write-oriented actions while keeping prompt browsing public
-- server-side search across title, content, and tags
-- backend pagination to support scalable browsing
-- backend-driven analytics so the frontend receives already-derived metrics
-
-Redis was particularly important because the assignment explicitly required live prompt retrieval counts without writing to PostgreSQL on every read. That behavior is implemented at the prompt detail endpoint level, where each detail request increments the Redis counter and returns the live `view_count` in the response.
-
-### Backend Code Organization
-
-The backend code remains intentionally direct:
-
-- `models.py` defines the prompt, tag, like, and bookmark relationships
-- `views.py` contains endpoint logic, request validation, auth-specific behavior, and analytics computation
-- `urls.py` maps feature routes explicitly
-- `admin.py` exposes the models through Django admin for inspection and debugging
-- `seed.py` provides repeatable database seeding for evaluation and testing
-
-I preferred this organization because the assignment specifically emphasized a working, clean solution. Instead of introducing extra architectural layers too early, I focused on keeping the flow of data and behavior easy to inspect.
-
-Validation is handled close to the endpoint logic so the business rules stay visible in one place. This includes:
-
-- prompt title and content validation
-- complexity range enforcement
-- curated tag validation and tag count limits
-- signup checks for unique username and email
-- login support for either username or email
-
-On the read side, the backend is designed so the frontend can stay simpler:
-
-- prompt list responses already include pagination metadata
-- prompt payloads include like/bookmark flags for the current user
-- analytics responses return already-computed percentages instead of pushing that computation into Angular
-- tag responses are aligned with the curated UI taxonomy
-
-## Feature Walkthrough
-
-### Prompt Management
-
-- Browse prompts in a gallery-style dashboard
-- Open a prompt detail page with full content and metadata
-- Create new prompts using a reactive form
-- Validate title, content, complexity, and tag selection
-
-### Tagging and Discovery
-
+- Tagging system with many-to-many prompt-tag relation
 - Tag-based filtering
-- Curated trending tags in the interface
-- Backend support for prompt-tag relationships
-- Search across prompt title, content, and tags
+- Persistent likes and bookmarks
+- Bookmarks page
+- Search with backend filtering and debounced frontend behavior
+- Pagination
+- Analytics panel with tag-aware aggregation
 
-### Authentication and Protected Actions
+## How To Navigate The App
 
-- Signup with full name, email, username, and password
-- Login with either username or email
-- JWT access and refresh tokens
-- Authenticated signout
-- Protected prompt creation
-- Authenticated likes and bookmarks
+The application is designed so the reviewer can understand the main flows quickly.
 
-### Analytics and Engagement
+### 1. Login / Signup
 
-- Redis-backed prompt view count
-- Prompt likes
-- Prompt bookmarks
-- Personal bookmarks page
-- Tag-aware analytics endpoint
+- Open the frontend URL
+- If you do not have an account, use the signup flow
+- After signup, the app logs in and redirects to the dashboard
+- If you already have an account, log in using either:
+  - username + password
+  - email + password
 
-## Curated Tag Strategy
+### 2. Dashboard
 
-One refinement I made during implementation was limiting the user-facing tag system to a curated trending set:
+The dashboard is the primary browsing experience.
 
-- Midjourney
-- UI/UX
-- Editorial
-- 3D-Render
-- Cyberpunk
-- Hyper-Real
-- Minimalism
+Here you can:
 
-Although the backend can represent broader prompt-tag relationships, the curated set produces a cleaner browsing experience, more consistent analytics, and a tighter UI. This helped the product feel intentional rather than overly noisy.
+- browse prompts in a gallery layout
+- use the trending tag filters
+- search the prompt library
+- switch sort/layout modes
+- like prompts
+- bookmark prompts
+- open any prompt detail page
 
-## Project Structure
+### 3. Prompt Detail Page
 
-```text
-PromptVault/
-|-- backend/
-|   |-- backend/
-|   |-- prompts/
-|   |-- manage.py
-|   |-- requirements.txt
-|   `-- seed.py
-|-- frontend/
-|   |-- src/
-|   |-- Dockerfile
-|   `-- nginx.conf
-|-- doc/
-|-- docker-compose.yml
-`-- README.md
-```
+Selecting a prompt opens the detail screen where you can:
 
-## Local Setup
+- read the full prompt content
+- view tags
+- view complexity
+- view the live Redis-backed `view_count`
 
-### Run the Full Stack with Docker
+### 4. Add Prompt
+
+Authenticated users can create prompts through the form flow:
+
+- title validation: minimum 3 characters
+- content validation: minimum 20 characters
+- complexity validation: range 1-10
+- tag selection support
+
+### 5. Bookmarks
+
+The bookmarks page shows the authenticated user’s saved prompts.
+
+## Local Setup Instructions
+
+### Run With Docker
 
 From the project root:
 
@@ -307,7 +107,7 @@ From the project root:
 docker compose up --build -d
 ```
 
-Application URLs:
+### Local URLs
 
 - Frontend: [http://localhost:4200](http://localhost:4200)
 - Backend API: [http://localhost:8000/api](http://localhost:8000/api)
@@ -328,45 +128,218 @@ docker compose exec backend python seed.py
 docker compose down
 ```
 
+## Architecture Overview
+
+The project is split into a clean frontend/backend structure:
+
+```text
+PromptVault/
+|-- backend/
+|   |-- backend/
+|   |-- prompts/
+|   |-- manage.py
+|   |-- requirements.txt
+|   `-- seed.py
+|-- frontend/
+|   |-- src/
+|   |-- Dockerfile
+|   `-- nginx.conf
+|-- docker-compose.yml
+`-- README.md
+```
+
+## Frontend Architectural Choices
+
+One of the key requirements in the submission was to explain the Angular organization clearly. I intentionally organized the Angular code around **screen responsibilities and application behavior**, rather than introducing too many abstract layers.
+
+### Why I Organized Angular This Way
+
+I used Angular standalone components and route-based composition because:
+
+- each screen can remain focused and self-contained
+- the route structure becomes easier to understand
+- dependencies stay close to the component that uses them
+- the application remains scalable without introducing unnecessary module complexity
+
+### Angular Structure
+
+The frontend is organized into these main parts:
+
+- `components/`
+- `services/`
+- `models/`
+- `guards/`
+- `interceptors/`
+
+### Component Layer
+
+The major UI responsibilities are separated by feature:
+
+- `prompt-list` handles dashboard browsing, filtering, pagination, bookmarks mode, and analytics integration
+- `prompt-detail` handles the single-prompt page
+- `prompt-form` handles prompt creation and validation flow
+- `analytics-sidebar` handles summary metrics and tag interaction
+- `top-nav` handles global search, user identity display, and signout
+- `login` handles login, signup, and forgot-password UI
+
+This keeps the application easy to reason about because each component maps directly to a user-facing feature.
+
+### Service Layer
+
+I placed API and auth logic in services so components stay focused on UI state instead of HTTP details.
+
+- `prompt.service.ts` handles:
+  - prompt listing
+  - prompt detail
+  - prompt creation
+  - tags
+  - likes
+  - bookmarks
+  - analytics
+- `auth.service.ts` handles:
+  - signup
+  - login
+  - token persistence
+  - refresh flow
+  - logout
+
+This separation improves maintainability because request construction, API URLs, and session logic are centralized instead of duplicated across components.
+
+### Guard and Interceptor Layer
+
+- `auth.guard.ts` protects routes that require authentication, such as prompt creation and bookmarks
+- `auth.interceptor.ts` attaches JWT access tokens and handles refresh/retry behavior on unauthorized requests
+
+This allows authentication concerns to stay outside the components themselves.
+
+### Why Reactive Forms
+
+The prompt creation flow uses Angular Reactive Forms because the assignment explicitly required validation. Reactive forms made it straightforward to manage:
+
+- field-level validation
+- touched/dirty states
+- multi-step form behavior
+- server error mapping
+
+That made the add-prompt flow easier to structure and easier to extend.
+
+### Search and UI Performance
+
+Search was deliberately implemented with debouncing and duplicate suppression so the frontend does not issue a request on every keystroke. This keeps the interaction smooth and reduces unnecessary backend calls.
+
+## Backend Architectural Choices
+
+The backend was kept intentionally direct and readable. Since the assignment emphasized a clean working solution, I preferred a focused Django structure over introducing unnecessary abstraction.
+
+### Why Django Was Organized This Way
+
+The backend centers around a single domain app: `prompts`.
+
+I kept it this way because:
+
+- the project domain is cohesive
+- the feature set is centered on prompt management and related interactions
+- splitting into too many apps would add ceremony without improving readability
+
+### Backend Structure
+
+- `models.py` defines the prompt, tag, like, and bookmark relationships
+- `views.py` contains endpoint logic, validation, auth-related API behavior, and analytics computation
+- `urls.py` maps the API routes
+- `admin.py` exposes data models in Django admin
+- `seed.py` provides repeatable prompt data for testing and demonstration
+
+### Data Model
+
+Core entities:
+
+- `Prompt`
+- `Tag`
+- `PromptLike`
+- `PromptBookmark`
+
+This model structure keeps the core prompt entity simple while storing user-specific engagement separately.
+
+### API and Logic Decisions
+
+Key backend choices:
+
+- PostgreSQL is the durable source of truth for prompt and relationship data
+- Redis is the source of truth for prompt `view_count`
+- JWT is used to protect write operations
+- prompt search is handled server-side across title, content, and tags
+- pagination is handled server-side
+- analytics are computed on the backend so the frontend receives ready-to-use metrics
+
+### Redis View Counter
+
+The assignment specifically required Redis-backed prompt views without writing to PostgreSQL on every read. This is implemented by incrementing Redis every time a prompt detail endpoint is requested, and returning the current `view_count` in the JSON response.
+
+### Validation Strategy
+
+Validation is implemented close to the endpoint logic so the business rules remain explicit:
+
+- prompt title minimum length
+- prompt content minimum length
+- complexity range validation
+- curated tag validation
+- signup uniqueness validation for username and email
+- login support for username or email
+
+## Feature Summary
+
+### Prompt Features
+
+- list prompts
+- view prompt details
+- create prompts
+- view complexity visually
+- view Redis-backed view count
+
+### Discovery Features
+
+- tag filtering
+- search
+- curated trending tags
+- pagination
+
+### User Features
+
+- signup
+- login
+- logout
+- likes
+- bookmarks
+- bookmarks page
+
+### Analytics Features
+
+- trending percentage
+- most viewed concentration
+- most liked concentration
+- saved prompts count
+
 ## Seed Data
 
-The project includes a seed script so the application can be evaluated with meaningful prompt data instead of placeholder records.
+The project includes seeded prompt data so the reviewer can test the product with realistic content instead of placeholder records.
 
-To load or refresh the dataset:
+To seed locally:
 
 ```powershell
 docker compose exec backend python seed.py
 ```
 
-The seeded data is designed to support:
+## Deployment Notes
 
-- prompt browsing
-- tag filtering
-- search validation
-- analytics visibility
-- signup and authenticated flow testing
+The project also includes Railway-oriented production preparation:
 
-## Validation
-
-### Backend Verification
-
-- migrations executed successfully
-- API tests cover signup, login behavior, prompt listing, likes, bookmarks, tags, and analytics
-- Dockerized backend rebuilds successfully
-
-### Frontend Verification
-
-- Angular production build succeeds
-- authenticated and unauthenticated routes behave correctly
-- API-driven flows for prompt creation, search, bookmarks, and analytics are connected to the backend
-- sticky header, search behavior, and authenticated identity display were verified in the running UI
-
-## Submission Notes
-
-- Public repository link: `https://github.com/Asgarsk01/PromptVault.git`
-- View-only Figma link: [PromptVault Figma](https://www.figma.com/design/cLQxjyzH02hSmmmxziSQnS/PromptVault?node-id=0-1&t=rAu52UB1wnHXc4Ew-1)
-- Public deployment URL: to be added later if included
+- backend `railway.json`
+- frontend `railway.json`
+- production environment file
+- Gunicorn-based backend startup
+- static/media settings
+- Railway-compatible CORS configuration
 
 ## Final Note
 
-My goal with this submission was not only to satisfy the assignment requirements, but to present a coherent, technically sound application that reflects clean Angular organization, dependable backend integration, thoughtful system design, and a deliberate user experience.
+My aim with this submission was to build a solution that is not only complete against the assignment checklist, but also clear, maintainable, and easy to evaluate. I focused on keeping the Angular code organized around feature responsibilities, keeping the Django backend readable and explicit, and delivering a polished end-to-end product with Dockerized local setup and deployable production structure.
