@@ -7,6 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-key')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
+ALLOWED_HOSTS.append('api.asgarassingment.online')
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -95,10 +97,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
+    "https://api.asgarassingment.online",
+    "https://app.asgarassingment.online",
+    "https://asgarassingment.online",
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.railway\.app$",
     r"^https://.*\.up\.railway\.app$",
+    r"^https://.*\.asgarassingment\.online$",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
